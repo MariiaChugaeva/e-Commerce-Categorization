@@ -1,42 +1,57 @@
+import re
 import pandas as pd
-from pathlib import Path
+from typing import List
+import nltk
+from nltk.stem import SnowballStemmer, WordNetLemmatizer
 
 
-def main():
-    project_root = Path(__file__).resolve().parents[2]
+class TextPreprocessor:
+    def __init__(self, stem_type: str | None = None):
+        self.stem_type = stem_type
 
-    raw_dir = project_root / "data" / "raw_data"
-    proc_dir = project_root / "data" / "prepared_data"
+        if stem_type in ("l1", "l2"):
+                nltk.download("punkt", quiet=True)
+                if stem_type == "l2":
+                    nltk.download("wordnet", quiet=True)
+                    nltk.download("omw-1.4", quiet=True)
 
-    full_df = pd.read_csv(raw_dir / "full_dataset.csv", sep="\t")
-    cat_map = pd.read_csv(raw_dir / "category_mapping.csv", sep="\t")
+        if stem_type == "l1":
+                self.stemmer = SnowballStemmer("english")
+                self.lemmatizer = None
+        elif stem_type == "l2":
+            self.stemmer = None
+            self.lemmatizer = WordNetLemmatizer()
+        else:
+            self.stemmer = None
+            self.lemmatizer = None
 
+    def normalize(self, text: str) -> str:
+        if not isinstance(text, str) or not text.strip():
+            return ""
+        text = text.lower()
+        text = re.sub(r'[^\w\s]', '', text)
+        return re.sub(r"\s+", " ", text).strip()
 
-    levels = cat_map["category_name"].str.split(" > ", expand=True)
-    levels.columns = [f"L{i+1}" for i in range(levels.shape[1])]
-    cat_map = pd.concat([cat_map, levels], axis=1)
+    def _stem_or_lemmatize(self, word: str) -> str:
+        if self.stem_type == "l1" and self.stemmer:
+            return self.stemmer.stem(word)
+        if self.stem_type == "l2" and self.lemmatizer:
+            return self.lemmatizer.lemmatize(word)
+        return word
 
-    cat_indexed = cat_map.set_index("category_label")
+    def tokenize(self, text: str) -> List[str]:
+        normalized = self.normalize(text)
+        if not normalized:
+            return []
+        tokens = normalized.split()
+        return [self._stem_or_lemmatize(t) for t in tokens]
 
-    full_df = full_df.merge(
-        cat_indexed.add_suffix("_clean"),
-        left_on="clean_category_id",
-        right_index=True,
-        how="left",
-    )
+    def to_fasttext_string(self, text: str) -> str:
+        return self.normalize(text)
 
-    full_df = full_df.merge(
-        cat_indexed.add_suffix("_noisy"),
-        left_on="noisy_category_id",
-        right_index=True,
-        how="left",
-    )
-
-    proc_dir.mkdir(parents=True, exist_ok=True)
-    out_path = proc_dir / "processed_dataset.parquet"
-    full_df.to_parquet(out_path, index=False)
-    print(f"Saved processed dataset to {out_path}")
-
-
-if __name__ == "__main__":
-    main()
+    def preprocess_df(self, df: pd.DataFrame, text_col: str = "text") -> pd.DataFrame:
+        df = df.copy()
+        df["normalized_text"] = df[text_col].apply(self.normalize)
+        df["tokens"] = df[text_col].apply(self.tokenize)
+        df["fasttext_text"] = df[text_col].apply(self.to_fasttext_string)
+        return df
