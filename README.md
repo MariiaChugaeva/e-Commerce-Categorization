@@ -57,7 +57,7 @@ Running preprocessing produces:
 From the project root:
 
 ```bash
-python -m src.data.prepare_data
+python -m service.main
 ```
 
 This will read the raw CSVs from `data/raw_data/` and write the Parquet file into `data/prepared_data/`.
