@@ -8,6 +8,8 @@ from nltk.stem import SnowballStemmer, WordNetLemmatizer
 class TextPreprocessor:
     def __init__(self, stem_type: str | None = None):
         self.stem_type = stem_type
+        self.word2idx: dict[str, int] = {}
+        self.vocab_size: int = 0
 
         if stem_type in ("l1", "l2"):
                 nltk.download("punkt", quiet=True)
@@ -48,6 +50,18 @@ class TextPreprocessor:
 
     def to_fasttext_string(self, text: str) -> str:
         return self.normalize(text)
+
+    def build_vocab(self, texts: List[str], min_count: int = 1) -> None:
+        counts: dict[str, int] = {}
+        for text in texts:
+            for token in self.tokenize(text):
+                counts[token] = counts.get(token, 0) + 1
+        words = [w for w, c in counts.items() if c >= min_count]
+        self.word2idx = {w: i for i, w in enumerate(words)}
+        self.vocab_size = len(self.word2idx)
+
+    def encode(self, text: str) -> List[int]:
+        return [self.word2idx[t] for t in self.tokenize(text) if t in self.word2idx]
 
     def preprocess_df(self, df: pd.DataFrame, text_col: str = "text") -> pd.DataFrame:
         df = df.copy()
