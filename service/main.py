@@ -4,11 +4,15 @@ from src.fasttext.model import FastText
 from src.evaluation.lime import LimeExplainer
 
 
+# load both datasets, offers is the main one with product texts
 offers = pd.read_csv("data/raw_data/full_dataset.csv", sep="\t")
 categories = pd.read_csv("data/raw_data/category_mapping.csv", sep="\t")
 
+# we only need L1, split by " > " to get it
 categories["L1"] = categories["category_name"].str.split(" > ").str[1]
 
+# merge to get category names into offers table
+# using clean_category_id because noisy has wrong labels sometimes
 offers = offers.merge(
     categories[["category_label", "L1"]],
     left_on="clean_category_id",
@@ -16,6 +20,7 @@ offers = offers.merge(
     how="left",
 )
 
+# drop rows where category wasnt found
 offers = offers.dropna(subset=["L1"])
 n_classes = offers["L1"].nunique()
 print(f"loaded products across")
@@ -24,9 +29,11 @@ print("сategory distribution (top 10):")
 for cat, count in offers["L1"].value_counts().head(10).items():
     print(f"  {cat:30s} {count:>6d}")
 
+# lowercase, remove punctuation etc
 preprocessor = TextPreprocessor()
 offers["processed"] = offers["text"].apply(preprocessor.normalize)
 
+# shuffle and split 80/20, random_state for reproducibility
 shuffled = offers.sample(frac=1, random_state=42).reset_index(drop=True)
 split = int(len(shuffled) * 0.8)
 train_df = shuffled[:split]
@@ -50,17 +57,20 @@ model = FastText(
 )
 model.fit(train_texts, train_labels)
 
+# simple accuracy check on test set
 predictions = model.predict(test_texts)
 correct = sum(p == l for p, l in zip(predictions, test_labels))
 accuracy = correct / len(test_labels)
 print(f"test accuracy: {accuracy:.2%} ({correct} / {len(test_labels)})")
 
+# LIME to understand what words model pays attention
 explainer = LimeExplainer(model.predict_proba, num_samples=300, seed=42)
 
 print("\n\n\n")
 print("LIME explanations for sample predictions")
 print("\n\n\n")
 
+# show 3 examples to see if model makes sense
 for i in range(3):
     text = test_texts[i]
     true_label = test_labels[i]
