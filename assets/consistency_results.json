@@ -1,0 +1,2025 @@
+{
+  "summary": {
+    "n_samples": 8,
+    "n_variants_total": 24,
+    "L1_prediction_stability": 0.8333333333333334,
+    "hft_violation_rate_originals": 0.5,
+    "hft_violation_rate_variants": 0.625,
+    "per_level": {
+      "L1": {
+        "n_pairs": 24,
+        "mean_top_k_overlap": 0.6403769841269841,
+        "mean_score_correlation": 0.7913322198678381
+      },
+      "L2": {
+        "n_pairs": 24,
+        "mean_top_k_overlap": 0.6517857142857143,
+        "mean_score_correlation": 0.924899224935221
+      }
+    }
+  },
+  "cases": [
+    {
+      "original": "RENAULT JOINT NUT",
+      "original_normalized": "renault joint nut",
+      "variants": [
+        "RENAULT JOINT NUT - BLACK",
+        "RENAULT JOINT NUT - MEDIUM",
+        "RENAULT JOINT NUT - PLASTIC"
+      ],
+      "variants_normalized": [
+        "renault joint nut black",
+        "renault joint nut medium",
+        "renault joint nut plastic"
+      ],
+      "pred_original": {
+        "path": [
+          "Automotive",
+          "Car Parts",
+          "Brake system",
+          "Other"
+        ],
+        "violation_at": null
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Automotive",
+            "Car Parts"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Automotive",
+            "Car Parts",
+            "Engines and Components",
+            "Other"
+          ],
+          "violation_at": null
+        },
+        {
+          "path": [
+            "Automotive",
+            "Car Parts"
+          ],
+          "violation_at": 3
+        }
+      ],
+      "path_agreement_per_variant": [
+        2,
+        2,
+        2
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Automotive",
+          "original": {
+            "words": [
+              "renault",
+              "joint",
+              "nut"
+            ],
+            "scores": [
+              0.4470568476271777,
+              0.39302735475658235,
+              0.33631111154851423
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "renault",
+                "joint",
+                "nut",
+                "black"
+              ],
+              "scores": [
+                0.5969225712876716,
+                0.343111327458431,
+                0.12331413850800732,
+                0.08379857593778703
+              ],
+              "overlap": 0.75,
+              "corr": 0.9984632170626981
+            },
+            {
+              "words": [
+                "renault",
+                "joint",
+                "nut",
+                "medium"
+              ],
+              "scores": [
+                0.650549474859185,
+                0.2829807645975302,
+                0.12299879189337704,
+                0.09052148906574091
+              ],
+              "overlap": 0.75,
+              "corr": 0.9719535014195095
+            },
+            {
+              "words": [
+                "renault",
+                "joint",
+                "nut",
+                "plastic"
+              ],
+              "scores": [
+                0.4210745103133927,
+                0.3605737706619748,
+                0.2104373673389244,
+                0.24963507739418347
+              ],
+              "overlap": 0.75,
+              "corr": 0.9743659707036938
+            }
+          ]
+        },
+        "L2": {
+          "label": "Car Parts",
+          "original": {
+            "words": [
+              "renault",
+              "joint",
+              "nut"
+            ],
+            "scores": [
+              0.40212248295636327,
+              0.4429932024002004,
+              0.32160319716265917
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "renault",
+                "joint",
+                "nut",
+                "black"
+              ],
+              "scores": [
+                0.5328936918526959,
+                0.5097224315777119,
+                0.021753001078239083,
+                -0.07335119874670412
+              ],
+              "overlap": 0.75,
+              "corr": 0.9296404157985603
+            },
+            {
+              "words": [
+                "renault",
+                "joint",
+                "nut",
+                "medium"
+              ],
+              "scores": [
+                0.4856279616267269,
+                0.4635681752263509,
+                0.08509509340820051,
+                0.0894017550814754
+              ],
+              "overlap": 0.75,
+              "corr": 0.9263390622726551
+            },
+            {
+              "words": [
+                "renault",
+                "joint",
+                "nut",
+                "plastic"
+              ],
+              "scores": [
+                0.4345867736727844,
+                0.4651235210809236,
+                0.1219979790453922,
+                0.14824722723707257
+              ],
+              "overlap": 0.75,
+              "corr": 0.9672267525613648
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "LOGICAL CART GAME MAGICAL FAST 2x2",
+      "original_normalized": "logical cart game magical fast 2x2",
+      "variants": [
+        "LOGICAL CART GAME MAGICAL FAST 2x2 BLUE",
+        "LOGICAL CART GAME MAGICAL FAST 2x2 SMALL",
+        "LOGICAL CART GAME MAGICAL FAST 2x:2 GRAY"
+      ],
+      "variants_normalized": [
+        "logical cart game magical fast 2x2 blue",
+        "logical cart game magical fast 2x2 small",
+        "logical cart game magical fast 2x2 gray"
+      ],
+      "pred_original": {
+        "path": [
+          "Kids",
+          "Toys"
+        ],
+        "violation_at": 3
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Kids",
+            "Toys"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Kids",
+            "Toys",
+            "Other",
+            "Other"
+          ],
+          "violation_at": null
+        },
+        {
+          "path": [
+            "Kids",
+            "Toys",
+            "Other",
+            "Other"
+          ],
+          "violation_at": null
+        }
+      ],
+      "path_agreement_per_variant": [
+        2,
+        2,
+        2
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Kids",
+          "original": {
+            "words": [
+              "logical",
+              "cart",
+              "game",
+              "magical",
+              "fast",
+              "2x2"
+            ],
+            "scores": [
+              0.01695810845083969,
+              0.26282458461807046,
+              0.21142594336424825,
+              0.28479887023369904,
+              -0.06199625655203089,
+              -0.0655808796869271
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "logical",
+                "cart",
+                "game",
+                "magical",
+                "fast",
+                "2x2",
+                "blue"
+              ],
+              "scores": [
+                0.03290711868635843,
+                0.178195933597509,
+                0.32230748341116916,
+                0.21459803164229554,
+                -0.05446703588443774,
+                -0.07043890282941176,
+                0.07585258664162686
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9054104215294307
+            },
+            {
+              "words": [
+                "logical",
+                "cart",
+                "game",
+                "magical",
+                "fast",
+                "2x2",
+                "small"
+              ],
+              "scores": [
+                0.054612732924558344,
+                0.2010731025583664,
+                0.2278394170367566,
+                0.22878148710845053,
+                -0.0595554042071908,
+                -0.04554212500591875,
+                0.1939002434295397
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9777565728572838
+            },
+            {
+              "words": [
+                "logical",
+                "cart",
+                "game",
+                "magical",
+                "fast",
+                "2x2",
+                "gray"
+              ],
+              "scores": [
+                0.011627783726929493,
+                0.22619472605298108,
+                0.24788551602630715,
+                0.2361809971472156,
+                -0.032738288217571895,
+                -0.048142423319202196,
+                -0.05423503240145794
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9815599992348766
+            }
+          ]
+        },
+        "L2": {
+          "label": "Toys",
+          "original": {
+            "words": [
+              "logical",
+              "cart",
+              "game",
+              "magical",
+              "fast",
+              "2x2"
+            ],
+            "scores": [
+              0.04635275088575075,
+              0.0635428142295534,
+              0.1719229494568336,
+              0.09620769191800006,
+              -0.11329358324491165,
+              -0.04466035757832821
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "logical",
+                "cart",
+                "game",
+                "magical",
+                "fast",
+                "2x2",
+                "blue"
+              ],
+              "scores": [
+                0.04222346854093692,
+                0.05483087032549232,
+                0.1201721729361064,
+                0.05911556234245619,
+                -0.05642889529062295,
+                0.0004336231469908879,
+                -0.061369274866795075
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.990548423521475
+            },
+            {
+              "words": [
+                "logical",
+                "cart",
+                "game",
+                "magical",
+                "fast",
+                "2x2",
+                "small"
+              ],
+              "scores": [
+                0.06657103535077467,
+                0.03480819200327831,
+                0.17475339489653488,
+                0.06296914764616564,
+                -0.12123773815614317,
+                -0.04211859680649748,
+                0.16066194345809257
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9797638224209017
+            },
+            {
+              "words": [
+                "logical",
+                "cart",
+                "game",
+                "magical",
+                "fast",
+                "2x2",
+                "gray"
+              ],
+              "scores": [
+                0.02869417896647008,
+                0.055149083369048446,
+                0.12767141097128223,
+                0.06486904334018866,
+                -0.052231015255089566,
+                -0.010343838008316904,
+                -0.018652064042487877
+              ],
+              "overlap": 1.0,
+              "corr": 0.9912300090953342
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "CRANKSHAFT OIL COOLER GASKETS C SIGNUM 1.8",
+      "original_normalized": "crankshaft oil cooler gaskets c signum 18",
+      "variants": [
+        "CRANKSHAFT OIL COOLER GASKETS C SIGNUM 1.8 BLUE",
+        "CRANKSHAFT OIL COOLER GASKETS C SIGNUM 1.8 LARGE",
+        "CRANKSHAFT OIL COOLER GASKETS C SIGNUM 1.8 METAL"
+      ],
+      "variants_normalized": [
+        "crankshaft oil cooler gaskets c signum 18 blue",
+        "crankshaft oil cooler gaskets c signum 18 large",
+        "crankshaft oil cooler gaskets c signum 18 metal"
+      ],
+      "pred_original": {
+        "path": [
+          "Automotive",
+          "Car Parts",
+          "Filters"
+        ],
+        "violation_at": 4
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Automotive",
+            "Car Parts",
+            "Filters"
+          ],
+          "violation_at": 4
+        },
+        {
+          "path": [
+            "Automotive",
+            "Car Parts"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Automotive",
+            "Car Parts",
+            "Engines and Components",
+            "Other"
+          ],
+          "violation_at": null
+        }
+      ],
+      "path_agreement_per_variant": [
+        3,
+        2,
+        2
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Automotive",
+          "original": {
+            "words": [
+              "crankshaft",
+              "oil",
+              "cooler",
+              "gaskets",
+              "c",
+              "signum",
+              "18"
+            ],
+            "scores": [
+              0.2040280014222579,
+              0.23100550047244395,
+              0.2687143100626983,
+              0.21745556346885914,
+              0.08350276256617105,
+              0.18910826871157968,
+              0.21223153670540298
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "crankshaft",
+                "oil",
+                "cooler",
+                "gaskets",
+                "c",
+                "signum",
+                "18",
+                "blue"
+              ],
+              "scores": [
+                0.1038330476193162,
+                0.13667598601522743,
+                0.33771905946184255,
+                0.2153174939881647,
+                0.1343714024828009,
+                0.1495368489856859,
+                0.18289176040066818,
+                0.12650082600844456
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.5730053170716634
+            },
+            {
+              "words": [
+                "crankshaft",
+                "oil",
+                "cooler",
+                "gaskets",
+                "c",
+                "signum",
+                "18",
+                "large"
+              ],
+              "scores": [
+                0.09179936362993324,
+                0.20359785048514473,
+                0.5430666873787383,
+                0.22193947699147448,
+                0.07448110780470835,
+                0.15362240001016927,
+                0.17165110860172914,
+                -0.24840772507545641
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.7077455501155819
+            },
+            {
+              "words": [
+                "crankshaft",
+                "oil",
+                "cooler",
+                "gaskets",
+                "c",
+                "signum",
+                "18",
+                "metal"
+              ],
+              "scores": [
+                0.1050875717224303,
+                0.18321154635265982,
+                0.4331907976716899,
+                0.21336004124643773,
+                0.11463279285145439,
+                0.12800014460829975,
+                0.18677213804508536,
+                -0.04599189851322272
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.6670022061334482
+            }
+          ]
+        },
+        "L2": {
+          "label": "Car Parts",
+          "original": {
+            "words": [
+              "crankshaft",
+              "oil",
+              "cooler",
+              "gaskets",
+              "c",
+              "signum",
+              "18"
+            ],
+            "scores": [
+              0.1940297858737075,
+              0.2576714244624823,
+              0.27507211068702747,
+              0.22145073515585595,
+              0.07687098746634317,
+              0.19284895152073808,
+              0.1859711769647712
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "crankshaft",
+                "oil",
+                "cooler",
+                "gaskets",
+                "c",
+                "signum",
+                "18",
+                "blue"
+              ],
+              "scores": [
+                0.09599161857626383,
+                0.163670090001754,
+                0.4514765053951921,
+                0.19565364011671726,
+                0.09666371968911511,
+                0.14173424448044328,
+                0.12536432738474515,
+                0.027576662507624496
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.6577928418974629
+            },
+            {
+              "words": [
+                "crankshaft",
+                "oil",
+                "cooler",
+                "gaskets",
+                "c",
+                "signum",
+                "18",
+                "large"
+              ],
+              "scores": [
+                0.09526101251849808,
+                0.25261442364755526,
+                0.5611604729199824,
+                0.20858945575915047,
+                0.07026876797222782,
+                0.16574622967627017,
+                0.11261774821714718,
+                -0.23776071072734242
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.7455229007559706
+            },
+            {
+              "words": [
+                "crankshaft",
+                "oil",
+                "cooler",
+                "gaskets",
+                "c",
+                "signum",
+                "18",
+                "metal"
+              ],
+              "scores": [
+                0.10877098492694656,
+                0.22253214874890292,
+                0.37122754964853605,
+                0.20567536188584745,
+                0.1562592642166488,
+                0.1488190628165724,
+                0.1374738371767984,
+                0.033564241412134446
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.6331366262657835
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "BLACKOUT ROOF BLIND FOR FAKRO 55/98 WINDOW",
+      "original_normalized": "blackout roof blind for fakro 5598 window",
+      "variants": [
+        "BLACKOUT ROOF BLIND FOR FAKRO 55/98 WINDOW - SILVER",
+        "BLACKOUT ROOF BLIND FOR FAK. 55/98 WINDOW - LARGEST SIZE",
+        "BLACKOUT ROOF BLIND FOR FAKRO 55/98 WINDOW - 100% BLACK"
+      ],
+      "variants_normalized": [
+        "blackout roof blind for fakro 5598 window silver",
+        "blackout roof blind for fak 5598 window largest size",
+        "blackout roof blind for fakro 5598 window 100 black"
+      ],
+      "pred_original": {
+        "path": [
+          "Home and Garden",
+          "Equipment"
+        ],
+        "violation_at": 3
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Home and Garden",
+            "Equipment"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Home and Garden",
+            "Equipment"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Home and Garden",
+            "Equipment"
+          ],
+          "violation_at": 3
+        }
+      ],
+      "path_agreement_per_variant": [
+        2,
+        2,
+        2
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Home and Garden",
+          "original": {
+            "words": [
+              "blackout",
+              "roof",
+              "blind",
+              "for",
+              "fakro",
+              "5598",
+              "window"
+            ],
+            "scores": [
+              0.2359223034695088,
+              0.2328714003025002,
+              0.24294852054685248,
+              0.166350070131534,
+              0.12006878045967934,
+              0.19316029618846134,
+              0.22476402094709383
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "blackout",
+                "roof",
+                "blind",
+                "for",
+                "fakro",
+                "5598",
+                "window",
+                "silver"
+              ],
+              "scores": [
+                0.14460542357936532,
+                0.1583195093236988,
+                0.2344123961251803,
+                0.18583772627132814,
+                0.18418802886473115,
+                0.17093153014757084,
+                0.18395094999570777,
+                0.19728216938940102
+              ],
+              "overlap": 0.25,
+              "corr": -0.003063715189312597
+            },
+            {
+              "words": [
+                "blackout",
+                "roof",
+                "blind",
+                "for",
+                "fak",
+                "5598",
+                "window",
+                "largest",
+                "size"
+              ],
+              "scores": [
+                0.2287232556288189,
+                0.18578896494579983,
+                0.3167718972759966,
+                0.11283769239506476,
+                0.12120874820481431,
+                0.10699287410550892,
+                0.23232558397156633,
+                0.05875209037297904,
+                0.0013409112071757067
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.855142895810641
+            },
+            {
+              "words": [
+                "blackout",
+                "roof",
+                "blind",
+                "for",
+                "fakro",
+                "5598",
+                "window",
+                "100",
+                "black"
+              ],
+              "scores": [
+                0.18110678197214078,
+                0.13054113938903616,
+                0.22327769825518617,
+                0.07784590789546407,
+                0.17286044813348644,
+                0.1514731477215176,
+                0.19357053581060849,
+                0.19125753421239194,
+                0.18678908865539146
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.39677246729745713
+            }
+          ]
+        },
+        "L2": {
+          "label": "Equipment",
+          "original": {
+            "words": [
+              "blackout",
+              "roof",
+              "blind",
+              "for",
+              "fakro",
+              "5598",
+              "window"
+            ],
+            "scores": [
+              0.2420354915631186,
+              0.17419037599564474,
+              0.33222276892051894,
+              0.1254534714877038,
+              0.09797691729602746,
+              0.1733949280474755,
+              0.2027019566572295
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "blackout",
+                "roof",
+                "blind",
+                "for",
+                "fakro",
+                "5598",
+                "window",
+                "silver"
+              ],
+              "scores": [
+                0.17539966296638268,
+                0.11092043648817397,
+                0.370704330500944,
+                0.12696066162810182,
+                0.14672389269353386,
+                0.11920162412316304,
+                0.1723749570425593,
+                0.09087449617380967
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.8452484010735808
+            },
+            {
+              "words": [
+                "blackout",
+                "roof",
+                "blind",
+                "for",
+                "fak",
+                "5598",
+                "window",
+                "largest",
+                "size"
+              ],
+              "scores": [
+                0.23044483906472668,
+                0.11415598517509576,
+                0.4950898902072367,
+                0.09072710546182444,
+                0.09624202821675326,
+                0.08452115272989151,
+                0.16583303181476994,
+                -0.03525107845272339,
+                -0.029875535332684732
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9604156379806643
+            },
+            {
+              "words": [
+                "blackout",
+                "roof",
+                "blind",
+                "for",
+                "fakro",
+                "5598",
+                "window",
+                "100",
+                "black"
+              ],
+              "scores": [
+                0.22088736793938435,
+                0.07032131545146836,
+                0.4082357001938366,
+                0.054949635645532464,
+                0.12807420894304022,
+                0.10151135486648405,
+                0.17901911585407174,
+                0.09468720750246987,
+                0.03281069949381698
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.8935819517571512
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "LED bulb GU10 3W 230V 4500K 245lm Forever Light",
+      "original_normalized": "led bulb gu10 3w 230v 4500k 245lm forever light",
+      "variants": [
+        "LED bulb GU10 3W 230V 4500K 245lm Black Finish",
+        "LED bulb GU10 3W 230V 4500K 245lm Small Size",
+        "LED bulb GU10 3W 210V 4500K 245lm White Finish"
+      ],
+      "variants_normalized": [
+        "led bulb gu10 3w 230v 4500k 245lm black finish",
+        "led bulb gu10 3w 230v 4500k 245lm small size",
+        "led bulb gu10 3w 210v 4500k 245lm white finish"
+      ],
+      "pred_original": {
+        "path": [
+          "Home and Garden",
+          "Lighting",
+          "Lamps",
+          "Other"
+        ],
+        "violation_at": null
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Home and Garden",
+            "Lighting",
+            "Lamps",
+            "Other"
+          ],
+          "violation_at": null
+        },
+        {
+          "path": [
+            "Home and Garden",
+            "Construction Work and Equipment"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Home and Garden",
+            "Lighting",
+            "Lamps",
+            "Other"
+          ],
+          "violation_at": null
+        }
+      ],
+      "path_agreement_per_variant": [
+        4,
+        1,
+        4
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Home and Garden",
+          "original": {
+            "words": [
+              "led",
+              "bulb",
+              "gu10",
+              "3w",
+              "230v",
+              "4500k",
+              "245lm",
+              "forever",
+              "light"
+            ],
+            "scores": [
+              0.18840306783623234,
+              0.18002550846200988,
+              0.18821586385390784,
+              0.21205856702636505,
+              0.11452146130375632,
+              0.16622163008030505,
+              0.10792048674421598,
+              0.0710013821147717,
+              0.1728916737867071
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "led",
+                "bulb",
+                "gu10",
+                "3w",
+                "230v",
+                "4500k",
+                "245lm",
+                "black",
+                "finish"
+              ],
+              "scores": [
+                0.1802111998363634,
+                0.23236121933697657,
+                0.18333959423234641,
+                0.18696692621069094,
+                0.1429342806405206,
+                0.14226674108130055,
+                0.13587338378277236,
+                0.1554706177745953,
+                0.06191797488201929
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.6830740190461508
+            },
+            {
+              "words": [
+                "led",
+                "bulb",
+                "gu10",
+                "3w",
+                "230v",
+                "4500k",
+                "245lm",
+                "small",
+                "size"
+              ],
+              "scores": [
+                0.2539646905097447,
+                0.29000261701238866,
+                0.23443427556067103,
+                0.1830061759768916,
+                0.11446499098207921,
+                0.06888707907313626,
+                0.08482432802436246,
+                0.06654550573964804,
+                0.0757708664326199
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.6461210400339128
+            },
+            {
+              "words": [
+                "led",
+                "bulb",
+                "gu10",
+                "3w",
+                "210v",
+                "4500k",
+                "245lm",
+                "white",
+                "finish"
+              ],
+              "scores": [
+                0.20680417971852938,
+                0.2422100210656378,
+                0.2282105529780377,
+                0.17700404630369396,
+                0.15776006631885908,
+                0.12002875307020781,
+                0.1455086008785899,
+                0.08559479033387819,
+                0.0743065698966382
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.48034981323191467
+            }
+          ]
+        },
+        "L2": {
+          "label": "Lighting",
+          "original": {
+            "words": [
+              "led",
+              "bulb",
+              "gu10",
+              "3w",
+              "230v",
+              "4500k",
+              "245lm",
+              "forever",
+              "light"
+            ],
+            "scores": [
+              0.5703725584223801,
+              0.07442813563373976,
+              0.017438963193165263,
+              -0.05051023458356856,
+              -0.07318593634002067,
+              0.06422996410882806,
+              0.04698889011025044,
+              -0.0952302292410512,
+              0.01816079928507801
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "led",
+                "bulb",
+                "gu10",
+                "3w",
+                "230v",
+                "4500k",
+                "245lm",
+                "black",
+                "finish"
+              ],
+              "scores": [
+                0.5621476425773666,
+                0.0846445157854717,
+                0.011773732431628204,
+                -0.06327347060719815,
+                -0.0757161760200859,
+                0.08472413861312146,
+                0.05340982642024655,
+                -0.020652297794328665,
+                -0.0669380661056712
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9985648897669673
+            },
+            {
+              "words": [
+                "led",
+                "bulb",
+                "gu10",
+                "3w",
+                "230v",
+                "4500k",
+                "245lm",
+                "small",
+                "size"
+              ],
+              "scores": [
+                0.4819645939942225,
+                0.12890576973371926,
+                0.05304003720874006,
+                -0.05178483671655081,
+                -0.023408739743134316,
+                0.04880694080239859,
+                0.058901546873353965,
+                -0.050563616567513056,
+                -0.15771839131525894
+              ],
+              "overlap": 0.25,
+              "corr": 0.9886128334676759
+            },
+            {
+              "words": [
+                "led",
+                "bulb",
+                "gu10",
+                "3w",
+                "210v",
+                "4500k",
+                "245lm",
+                "white",
+                "finish"
+              ],
+              "scores": [
+                0.6660614581688737,
+                0.09081180672113646,
+                0.01460150427913835,
+                -0.07080464452159166,
+                0.055144090484541566,
+                0.06687124864629834,
+                0.06104339666265544,
+                -0.061222740106322886,
+                -0.10940940327218958
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.9996750108089323
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "Lady Gaga/BORN THIS WAY THE TENTH ANNIVERSAR",
+      "original_normalized": "lady gagaborn this way the tenth anniversar",
+      "variants": [
+        "Lady Gaga/BORN THIS WAY THE TENTH ANNIVERSAR - 100% Cotton",
+        "Lady Gaga/BORN THIS WAY THE TENTH ANNIVERSAR - Size Medium",
+        "Lady Gaga/BORN THIS WAY THE TENTH ANNIVERSAR - 20% Silk Blend"
+      ],
+      "variants_normalized": [
+        "lady gagaborn this way the tenth anniversar 100 cotton",
+        "lady gagaborn this way the tenth anniversar size medium",
+        "lady gagaborn this way the tenth anniversar 20 silk blend"
+      ],
+      "pred_original": {
+        "path": [
+          "Culture and Entertainment",
+          "Books and Comics",
+          "Foreign Books",
+          "English"
+        ],
+        "violation_at": null
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Kids"
+          ],
+          "violation_at": 2
+        },
+        {
+          "path": [
+            "Business and Services",
+            "Industry",
+            "Workwear and safety"
+          ],
+          "violation_at": 4
+        },
+        {
+          "path": [
+            "Culture and Entertainment",
+            "Books and Comics",
+            "Foreign Books",
+            "Other"
+          ],
+          "violation_at": null
+        }
+      ],
+      "path_agreement_per_variant": [
+        0,
+        0,
+        3
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Culture and Entertainment",
+          "original": {
+            "words": [
+              "lady",
+              "gagaborn",
+              "this",
+              "way",
+              "the",
+              "tenth",
+              "anniversar"
+            ],
+            "scores": [
+              0.14789034615277924,
+              0.1773000145477519,
+              0.28973952475300335,
+              0.10261097995405875,
+              0.26594673296848653,
+              0.16187341540771968,
+              0.15824622993590595
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "lady",
+                "gagaborn",
+                "this",
+                "way",
+                "the",
+                "tenth",
+                "anniversar",
+                "100",
+                "cotton"
+              ],
+              "scores": [
+                0.14350939143262034,
+                0.12473434857091907,
+                0.2035008255868308,
+                0.13870469331179683,
+                0.25125082482038874,
+                0.08683022189489295,
+                0.05951702942939012,
+                -0.016197416366263463,
+                -0.5287694280293374
+              ],
+              "overlap": 0.25,
+              "corr": 0.7231239677117656
+            },
+            {
+              "words": [
+                "lady",
+                "gagaborn",
+                "this",
+                "way",
+                "the",
+                "tenth",
+                "anniversar",
+                "size",
+                "medium"
+              ],
+              "scores": [
+                0.16410231831902847,
+                0.09809496613071407,
+                0.21151530697748389,
+                0.1213014087533118,
+                0.2390438502585376,
+                0.13464785060966583,
+                0.06977433263443128,
+                -0.582156345695375,
+                0.009019403587803546
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.7540261214307906
+            },
+            {
+              "words": [
+                "lady",
+                "gagaborn",
+                "this",
+                "way",
+                "the",
+                "tenth",
+                "anniversar",
+                "20",
+                "silk",
+                "blend"
+              ],
+              "scores": [
+                0.11105614475524055,
+                0.12812342380604752,
+                0.26659344910959126,
+                0.06557404983109112,
+                0.348067519660703,
+                0.08766744172138516,
+                0.07279468024151572,
+                0.09458157038443257,
+                -0.02042254693509472,
+                -0.0478746882063232
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.9160171330795639
+            }
+          ]
+        },
+        "L2": {
+          "label": "Books and Comics",
+          "original": {
+            "words": [
+              "lady",
+              "gagaborn",
+              "this",
+              "way",
+              "the",
+              "tenth",
+              "anniversar"
+            ],
+            "scores": [
+              0.020443917699579855,
+              0.1310791124673235,
+              0.42042828074425126,
+              -0.04659504032029965,
+              0.3327656450930111,
+              0.1272262507507818,
+              0.12091287447327109
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "lady",
+                "gagaborn",
+                "this",
+                "way",
+                "the",
+                "tenth",
+                "anniversar",
+                "100",
+                "cotton"
+              ],
+              "scores": [
+                0.0728843665412831,
+                0.09303811764516982,
+                0.279568812229726,
+                0.04504232070344536,
+                0.2819152293226577,
+                0.08126386150890039,
+                0.05547855039751606,
+                -0.04522670789007734,
+                -0.364964142002735
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9332555500707058
+            },
+            {
+              "words": [
+                "lady",
+                "gagaborn",
+                "this",
+                "way",
+                "the",
+                "tenth",
+                "anniversar",
+                "size",
+                "medium"
+              ],
+              "scores": [
+                0.10010200352570142,
+                0.07091172538331623,
+                0.24571860074431606,
+                0.05256514472082898,
+                0.22418840415593552,
+                0.1126219163266059,
+                0.06210081487237877,
+                -0.5008956690344037,
+                0.019095488042337988
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.9153177989934098
+            },
+            {
+              "words": [
+                "lady",
+                "gagaborn",
+                "this",
+                "way",
+                "the",
+                "tenth",
+                "anniversar",
+                "20",
+                "silk",
+                "blend"
+              ],
+              "scores": [
+                0.03431847873138769,
+                0.10721852723088705,
+                0.33151815396358914,
+                -0.05132396069933502,
+                0.32780638786611804,
+                0.07428864110147439,
+                0.05928788408614771,
+                0.12692607800280792,
+                -0.05425033141298444,
+                -0.07679480530192766
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.9782459413641358
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "SEAT LEON III HB Automatic trunk opening",
+      "original_normalized": "seat leon iii hb automatic trunk opening",
+      "variants": [
+        "SEAT LEON III HB Automatic trunk opening - Blue",
+        "SEAT LEON III HB Automatic trunk opening - Medium size",
+        "SEAT LEON III HB Automatic trunk opening - 2 pieces"
+      ],
+      "variants_normalized": [
+        "seat leon iii hb automatic trunk opening blue",
+        "seat leon iii hb automatic trunk opening medium size",
+        "seat leon iii hb automatic trunk opening 2 pieces"
+      ],
+      "pred_original": {
+        "path": [
+          "Automotive",
+          "Car Parts"
+        ],
+        "violation_at": 3
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Automotive",
+            "Car Parts"
+          ],
+          "violation_at": 3
+        },
+        {
+          "path": [
+            "Automotive",
+            "Car Parts",
+            "Engines and Components",
+            "Other"
+          ],
+          "violation_at": null
+        },
+        {
+          "path": [
+            "Automotive",
+            "Car Parts"
+          ],
+          "violation_at": 3
+        }
+      ],
+      "path_agreement_per_variant": [
+        2,
+        2,
+        2
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Automotive",
+          "original": {
+            "words": [
+              "seat",
+              "leon",
+              "iii",
+              "hb",
+              "automatic",
+              "trunk",
+              "opening"
+            ],
+            "scores": [
+              0.29602560155758895,
+              0.26222437252412156,
+              0.1607309346986213,
+              0.1459242665159748,
+              0.057628514434666454,
+              0.27720337838448694,
+              0.18020198256338416
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "seat",
+                "leon",
+                "iii",
+                "hb",
+                "automatic",
+                "trunk",
+                "opening",
+                "blue"
+              ],
+              "scores": [
+                0.27577755914504637,
+                0.22378109255798515,
+                0.17182691173422585,
+                0.12019139480863594,
+                0.05750114983357426,
+                0.27753425226571005,
+                0.13533605292869508,
+                0.09085535353242132
+              ],
+              "overlap": 1.0,
+              "corr": 0.9689535487660491
+            },
+            {
+              "words": [
+                "seat",
+                "leon",
+                "iii",
+                "hb",
+                "automatic",
+                "trunk",
+                "opening",
+                "medium",
+                "size"
+              ],
+              "scores": [
+                0.36944912901489296,
+                0.27688729604183365,
+                0.1608230917624257,
+                0.00809791310177118,
+                -0.0013425924739262052,
+                0.332593988512233,
+                0.17866271987184373,
+                -0.039293163619105786,
+                -0.26984334387135533
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9489634128679774
+            },
+            {
+              "words": [
+                "seat",
+                "leon",
+                "iii",
+                "hb",
+                "automatic",
+                "trunk",
+                "opening",
+                "2",
+                "pieces"
+              ],
+              "scores": [
+                0.38176741001658515,
+                0.21654826069617036,
+                0.17044253248874683,
+                0.006391891615294407,
+                -0.014353794444353385,
+                0.34526434774687137,
+                0.11865438437351683,
+                0.030550586022669152,
+                -0.11038398416957386
+              ],
+              "overlap": 1.0,
+              "corr": 0.9251054203402479
+            }
+          ]
+        },
+        "L2": {
+          "label": "Car Parts",
+          "original": {
+            "words": [
+              "seat",
+              "leon",
+              "iii",
+              "hb",
+              "automatic",
+              "trunk",
+              "opening"
+            ],
+            "scores": [
+              0.19791419174344496,
+              0.3937193672478144,
+              0.12664972184045595,
+              0.09636944790913443,
+              0.02641341185614965,
+              -0.11649249690518071,
+              0.2771915693272345
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "seat",
+                "leon",
+                "iii",
+                "hb",
+                "automatic",
+                "trunk",
+                "opening",
+                "blue"
+              ],
+              "scores": [
+                0.1972347690922863,
+                0.35061126060863823,
+                0.14631528008536873,
+                0.0866057907214012,
+                0.017815029943835187,
+                -0.11630247172689943,
+                0.23703242429954316,
+                -0.07800013296572536
+              ],
+              "overlap": 1.0,
+              "corr": 0.9939612956491147
+            },
+            {
+              "words": [
+                "seat",
+                "leon",
+                "iii",
+                "hb",
+                "automatic",
+                "trunk",
+                "opening",
+                "medium",
+                "size"
+              ],
+              "scores": [
+                0.2696130818934746,
+                0.33045085322239,
+                0.16870925308085313,
+                0.06205467641731716,
+                0.003396469252832203,
+                -0.08801147991442433,
+                0.22235638990020792,
+                -0.07647241001731428,
+                -0.19413654858432072
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9511405718477002
+            },
+            {
+              "words": [
+                "seat",
+                "leon",
+                "iii",
+                "hb",
+                "automatic",
+                "trunk",
+                "opening",
+                "2",
+                "pieces"
+              ],
+              "scores": [
+                0.22990091055057646,
+                0.3179124814074298,
+                0.14706252532678973,
+                0.0441861627884241,
+                0.007282354716032892,
+                -0.11527185331814337,
+                0.23711782495879347,
+                -0.00982963432059682,
+                -0.11414030730698056
+              ],
+              "overlap": 1.0,
+              "corr": 0.9735882731485174
+            }
+          ]
+        }
+      }
+    },
+    {
+      "original": "Immunotherapy of lung cancer In the doctor's office specj",
+      "original_normalized": "immunotherapy of lung cancer in the doctors office specj",
+      "variants": [
+        "Immunotherapy of lung cancer In the doctor's office specj - Dark blue",
+        "Immunotherapy of lung cancer In the doctor's office specj - Medium size",
+        "Immunotherapy of lung cancer In the doctor's office specj - 100% cotton"
+      ],
+      "variants_normalized": [
+        "immunotherapy of lung cancer in the doctors office specj dark blue",
+        "immunotherapy of lung cancer in the doctors office specj medium size",
+        "immunotherapy of lung cancer in the doctors office specj 100 cotton"
+      ],
+      "pred_original": {
+        "path": [
+          "Culture and Entertainment",
+          "Books and Comics",
+          "Foreign Books",
+          "English"
+        ],
+        "violation_at": null
+      },
+      "pred_variants": [
+        {
+          "path": [
+            "Culture and Entertainment",
+            "Books and Comics",
+            "Foreign Books",
+            "English"
+          ],
+          "violation_at": null
+        },
+        {
+          "path": [
+            "Business and Services"
+          ],
+          "violation_at": 2
+        },
+        {
+          "path": [
+            "Kids"
+          ],
+          "violation_at": 2
+        }
+      ],
+      "path_agreement_per_variant": [
+        4,
+        0,
+        0
+      ],
+      "explanations": {
+        "L1": {
+          "label": "Culture and Entertainment",
+          "original": {
+            "words": [
+              "immunotherapy",
+              "of",
+              "lung",
+              "cancer",
+              "in",
+              "the",
+              "doctors",
+              "office",
+              "specj"
+            ],
+            "scores": [
+              0.10849882343797351,
+              0.41804346742317927,
+              0.06492495879203705,
+              0.0521552277566998,
+              0.1296518435943127,
+              0.3183891618840802,
+              0.03272759183689563,
+              -0.05874906854592621,
+              0.09650505112583622
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "immunotherapy",
+                "of",
+                "lung",
+                "cancer",
+                "in",
+                "the",
+                "doctors",
+                "office",
+                "specj",
+                "dark",
+                "blue"
+              ],
+              "scores": [
+                0.07648896407789361,
+                0.4136516105905598,
+                0.039699539272042686,
+                0.04596213848124783,
+                0.12516474812777978,
+                0.30885470653436903,
+                0.045638855739867194,
+                -0.049499014125701096,
+                0.06613639953492859,
+                0.042563514364870915,
+                -0.22778777787766583
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9939879528884915
+            },
+            {
+              "words": [
+                "immunotherapy",
+                "of",
+                "lung",
+                "cancer",
+                "in",
+                "the",
+                "doctors",
+                "office",
+                "specj",
+                "medium",
+                "size"
+              ],
+              "scores": [
+                0.08398055719627162,
+                0.3004352308207865,
+                0.054466020402089026,
+                0.05127381043623866,
+                0.1451917723035875,
+                0.19469008185013548,
+                0.05706289392301203,
+                0.0045277209608483885,
+                0.0331850725684553,
+                0.02416871952846718,
+                -0.480011861488203
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9581669366859136
+            },
+            {
+              "words": [
+                "immunotherapy",
+                "of",
+                "lung",
+                "cancer",
+                "in",
+                "the",
+                "doctors",
+                "office",
+                "specj",
+                "100",
+                "cotton"
+              ],
+              "scores": [
+                0.08446070152043844,
+                0.3284290855258669,
+                0.0656384010229026,
+                0.057392043970136294,
+                0.11797473233495846,
+                0.26785360713687223,
+                0.02299065745485346,
+                -0.0041573337571046065,
+                0.05307889038805249,
+                -0.045751330610949166,
+                -0.44169616068075157
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9879695066983635
+            }
+          ]
+        },
+        "L2": {
+          "label": "Books and Comics",
+          "original": {
+            "words": [
+              "immunotherapy",
+              "of",
+              "lung",
+              "cancer",
+              "in",
+              "the",
+              "doctors",
+              "office",
+              "specj"
+            ],
+            "scores": [
+              0.11058832020921404,
+              0.43244967982176763,
+              0.06309761135977135,
+              0.017908946373472043,
+              0.16756554892816136,
+              0.27822299170065706,
+              0.01445942962363394,
+              -0.03728186377342569,
+              0.09955961511168866
+            ]
+          },
+          "variants": [
+            {
+              "words": [
+                "immunotherapy",
+                "of",
+                "lung",
+                "cancer",
+                "in",
+                "the",
+                "doctors",
+                "office",
+                "specj",
+                "dark",
+                "blue"
+              ],
+              "scores": [
+                0.08366569720747438,
+                0.43039338259731036,
+                0.03908316294839776,
+                0.006230406312001968,
+                0.15920326691195014,
+                0.2774355050341086,
+                0.02616526685934938,
+                -0.03310914400112935,
+                0.06607737258926047,
+                -0.013159807828375955,
+                -0.22197312566250038
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.994799807586167
+            },
+            {
+              "words": [
+                "immunotherapy",
+                "of",
+                "lung",
+                "cancer",
+                "in",
+                "the",
+                "doctors",
+                "office",
+                "specj",
+                "medium",
+                "size"
+              ],
+              "scores": [
+                0.08147565714969789,
+                0.3271902911061286,
+                0.06442485272937971,
+                0.018049149279507817,
+                0.18245554624739013,
+                0.19037229394593985,
+                0.04093285509909578,
+                0.014164173703588115,
+                0.03176183341178755,
+                0.04259665206958011,
+                -0.4694750036222062
+              ],
+              "overlap": 0.6666666666666666,
+              "corr": 0.9611096380626335
+            },
+            {
+              "words": [
+                "immunotherapy",
+                "of",
+                "lung",
+                "cancer",
+                "in",
+                "the",
+                "doctors",
+                "office",
+                "specj",
+                "100",
+                "cotton"
+              ],
+              "scores": [
+                0.07922222501598478,
+                0.40536602311478914,
+                0.08111065032768738,
+                0.0174063191119172,
+                0.15974569619684134,
+                0.272612734455081,
+                -0.006433800673670654,
+                -0.02757691727584667,
+                0.046056427305134505,
+                -0.08264989587805943,
+                -0.2861538421014708
+              ],
+              "overlap": 0.42857142857142855,
+              "corr": 0.9888629422784408
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
