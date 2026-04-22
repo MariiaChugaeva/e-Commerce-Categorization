@@ -5,7 +5,6 @@ to classify product titles and show LIME explanations.
 """
 from __future__ import annotations
 
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
