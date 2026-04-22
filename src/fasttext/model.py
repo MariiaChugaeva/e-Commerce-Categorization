@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from typing import List
 
@@ -5,16 +7,19 @@ from src.data.prepare_data import TextPreprocessor
 
 
 def _softmax(logits: np.ndarray) -> np.ndarray:
-    """numerically stable softmax, clip to avoid overflow with big logits"""
+    # clip to avoid overflow, then shift for numerical stability
     clipped = np.clip(logits, -30, 30)
-    e = np.exp(clipped - clipped.max())
-    return e / e.sum()
+    shifted = clipped - clipped.max()
+    exp = np.exp(shifted)
+    return exp / exp.sum()
 
 
 class FastText:
-    """our own fasttext implementation from scratch
-    basically averages word embeddings and passes through linear layer
-    not as fast as facebook's version but easier to debug and modify"""
+    """Our own FastText-style classifier from scratch.
+
+    Averages word embeddings, passes through a linear layer, then softmax.
+    Trained with SGD on cross-entropy loss.
+    """
 
     def __init__(
         self,
@@ -24,7 +29,7 @@ class FastText:
         epochs: int = 5,
         min_count: int = 1,
         seed: int = 42,
-    ):
+    ) -> None:
         self.preprocessor = preprocessor
         self.embed_dim = embed_dim
         self.lr = lr
@@ -32,22 +37,20 @@ class FastText:
         self.min_count = min_count
         self.seed = seed
 
-        self._label2idx: dict = {}
-        self._idx2label: list = []
+        self._label2idx: dict[str, int] = {}
+        self._idx2label: list[str] = []
         self._embedding: np.ndarray | None = None
         self._weights: np.ndarray | None = None
         self._bias: np.ndarray | None = None
 
-    def _build_labels(self, labels: List) -> np.ndarray:
-        """create mapping between label strings and integer indices"""
+    def _build_labels(self, labels: List[str]) -> np.ndarray:
         unique = sorted(set(labels))
-        self._label2idx = {l: i for i, l in enumerate(unique)}
+        self._label2idx = {label: idx for idx, label in enumerate(unique)}
         self._idx2label = unique
-        return np.array([self._label2idx[l] for l in labels])
+        return np.array([self._label2idx[label] for label in labels])
 
     def _forward(self, word_ids: List[int]) -> tuple[np.ndarray, np.ndarray]:
-        """forward pass: average embeddings -> linear -> softmax
-        if text is empty (no known words) we just use zero vector"""
+        # if no known words, just use zeros
         if len(word_ids) == 0:
             hidden = np.zeros(self.embed_dim)
         else:
@@ -55,28 +58,24 @@ class FastText:
         logits = hidden @ self._weights + self._bias
         return hidden, _softmax(logits)
 
-    def _train_one(self, word_ids: List[int], label: int) -> float:
-        """single training step with SGD
-        returns cross-entropy loss for this sample"""
+    def _train_step(self, word_ids: List[int], label_id: int) -> float:
         hidden, probs = self._forward(word_ids)
 
-        # gradient of cross-entropy with softmax is just
-        grad = probs.copy()
-        grad[label] -= 1.0
+        # gradient of cross-entropy w.r.t. softmax output
+        grad_output = probs.copy()
+        grad_output[label_id] -= 1.0
 
-        self._weights -= self.lr * np.outer(hidden, grad)
-        self._bias -= self.lr * grad
+        self._weights -= self.lr * np.outer(hidden, grad_output)
+        self._bias -= self.lr * grad_output
 
-        # update embeddings too, divide by num words to keep gradient scale reasonable
+        # backprop into embeddings, scale by number of words
         if len(word_ids) > 0:
-            embed_grad = (grad @ self._weights.T) / len(word_ids)
-            self._embedding[word_ids] -= self.lr * embed_grad
+            grad_embed = (grad_output @ self._weights.T) / len(word_ids)
+            self._embedding[word_ids] -= self.lr * grad_embed
 
-        return -np.log(probs[label] + 1e-10)
+        return -np.log(probs[label_id] + 1e-10)
 
-    def fit(self, texts: List[str], labels: List) -> "FastText":
-        """train the model on given texts and labels
-        builds vocab first, then runs SGD for specified number of epochs"""
+    def fit(self, texts: List[str], labels: List[str]) -> FastText:
         self.preprocessor.build_vocab(texts, min_count=self.min_count)
         label_ids = self._build_labels(labels)
 
@@ -84,26 +83,24 @@ class FastText:
         n_classes = len(self._idx2label)
         vocab_size = self.preprocessor.vocab_size
 
-        # init embeddings with small random values, weights and bias start at zero
+        # small random init for embeddings, zeros for weights
         self._embedding = rng.normal(0, 1.0 / self.embed_dim, (vocab_size, self.embed_dim))
         self._weights = np.zeros((self.embed_dim, n_classes))
         self._bias = np.zeros(n_classes)
 
-        # pre-encode all texts so we dont redo tokenization every epoch
+        # encode once so we don't re-tokenize every epoch
         encoded = [self.preprocessor.encode(t) for t in texts]
-        n = len(texts)
+        n_samples = len(texts)
 
         for epoch in range(self.epochs):
-            order = rng.permutation(n)  # shuffle each epoch
-            total_loss = 0.0
-            for i in order:
-                total_loss += self._train_one(encoded[i], label_ids[i])
-            print(f"epoch {epoch + 1}/{self.epochs}  loss={total_loss / n:.4f}")
+            order = rng.permutation(n_samples)
+            total_loss = sum(self._train_step(encoded[i], label_ids[i]) for i in order)
+            avg_loss = total_loss / n_samples
+            print(f"  epoch {epoch + 1}/{self.epochs}  loss={avg_loss:.4f}", flush=True)
 
         return self
 
-    def predict(self, texts: List[str]) -> List:
-        """predict class labels for list of texts"""
+    def predict(self, texts: List[str]) -> List[str]:
         results = []
         for text in texts:
             word_ids = self.preprocessor.encode(text)
@@ -112,8 +109,7 @@ class FastText:
         return results
 
     def predict_proba(self, texts: List[str]) -> np.ndarray:
-        """same as predict but returns probability distribution over all classes
-        needed for LIME explainer"""
+        """Returns probability distribution over classes — needed for LIME."""
         all_probs = []
         for text in texts:
             word_ids = self.preprocessor.encode(text)

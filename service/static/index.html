@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIME Explorer — E-Commerce Categorization</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #232734;
+      --border: #2e3345;
+      --text: #e1e4ed;
+      --text-dim: #8b90a0;
+      --accent: #6c8dfa;
+      --accent-hover: #8ba4ff;
+      --positive: #4dabf7;
+      --negative: #ff6b6b;
+      --green: #51cf66;
+      --orange: #ffa94d;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-dim);
+      font-size: 15px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .input-group input[type="text"] {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn:hover { background: var(--accent-hover); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .controls label {
+      font-size: 13px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .controls select, .controls input[type="number"] {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 6px 10px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .controls input[type="number"] { width: 70px; }
+
+    .samples-hint {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .samples-hint span {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      margin: 3px 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+
+    .samples-hint span:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .path-chain {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .path-node {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .path-node .level-tag {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .path-arrow {
+      color: var(--text-dim);
+      font-size: 18px;
+      padding: 0 8px;
+    }
+
+    .violation-badge {
+      display: inline-block;
+      background: rgba(255, 107, 107, 0.15);
+      color: var(--negative);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .consistent-badge {
+      display: inline-block;
+      background: rgba(81, 207, 102, 0.15);
+      color: var(--green);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .lime-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .lime-meta {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .lime-meta strong {
+      color: var(--text);
+    }
+
+    .bar-chart { width: 100%; }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+      height: 32px;
+    }
+
+    .bar-word {
+      width: 130px;
+      text-align: right;
+      font-size: 14px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      color: var(--text);
+      flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 24px;
+      position: relative;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-center {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .bar-fill {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .bar-fill.positive {
+      background: var(--positive);
+      left: 50%;
+    }
+
+    .bar-fill.negative {
+      background: var(--negative);
+      right: 50%;
+    }
+
+    .bar-value {
+      width: 65px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-dim);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none; }
+
+    .normalized {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>LIME Explorer</h1>
+      <p>Hierarchical FastText classification with LIME explanations</p>
+    </header>
+
+    <div class="card">
+      <div class="input-group">
+        <input type="text" id="textInput" placeholder="Enter a product title..." />
+        <button class="btn" id="predictBtn" onclick="predict()">Explain</button>
+      </div>
+      <div class="controls">
+        <label>
+          LIME level
+          <select id="limeLevel">
+            <option value="1">L1</option>
+            <option value="2">L2</option>
+            <option value="3">L3</option>
+            <option value="4">L4</option>
+          </select>
+        </label>
+        <label>
+          Samples
+          <input type="number" id="numSamples" value="300" min="50" max="1000" step="50" />
+        </label>
+        <label>
+          Top-K
+          <input type="number" id="topK" value="10" min="3" max="20" />
+        </label>
+      </div>
+      <div class="samples-hint" id="samplesHint">
+        Loading sample titles...
+      </div>
+    </div>
+
+    <div id="loading" class="loading hidden">
+      <span class="spinner"></span> Running model + LIME...
+    </div>
+
+    <div id="results" class="hidden">
+      <div class="card">
+        <div class="section-title">Hierarchical Prediction</div>
+        <div class="normalized" id="normalizedText"></div>
+        <div class="path-chain" id="pathChain"></div>
+        <div id="violationInfo"></div>
+      </div>
+
+      <div class="card">
+        <div class="lime-header">
+          <div class="section-title" style="margin-bottom:0">LIME Explanation</div>
+          <div class="lime-meta" id="limeMeta"></div>
+        </div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+
+    document.getElementById('textInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') predict();
+    });
+
+    async function loadSamples() {
+      try {
+        const resp = await fetch(API + '/api/samples');
+        const data = await resp.json();
+        const hint = document.getElementById('samplesHint');
+        if (data.titles && data.titles.length > 0) {
+          const picks = data.titles.slice(0, 8);
+          hint.innerHTML = 'Try: ' + picks.map(t => {
+            const short = t.length > 55 ? t.slice(0, 52) + '...' : t;
+            return `<span onclick="fillAndPredict('${t.replace(/'/g, "\\'")}')">${short}</span>`;
+          }).join('');
+        }
+      } catch (e) {
+        document.getElementById('samplesHint').textContent = '';
+      }
+    }
+
+    function fillAndPredict(text) {
+      document.getElementById('textInput').value = text;
+      predict();
+    }
+
+    async function predict() {
+      const text = document.getElementById('textInput').value.trim();
+      if (!text) return;
+
+      const btn = document.getElementById('predictBtn');
+      btn.disabled = true;
+      document.getElementById('loading').classList.remove('hidden');
+      document.getElementById('results').classList.add('hidden');
+
+      try {
+        const resp = await fetch(API + '/api/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: text,
+            lime_level: parseInt(document.getElementById('limeLevel').value),
+            num_samples: parseInt(document.getElementById('numSamples').value),
+            top_k: parseInt(document.getElementById('topK').value),
+          }),
+        });
+
+        const data = await resp.json();
+        renderResults(data);
+      } catch (e) {
+        alert('Error: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        document.getElementById('loading').classList.add('hidden');
+      }
+    }
+
+    function renderResults(data) {
+      document.getElementById('normalizedText').textContent =
+        'Normalized: "' + data.normalized_text + '"';
+
+      const chain = document.getElementById('pathChain');
+      chain.innerHTML = '';
+      data.path.forEach((p, i) => {
+        if (i > 0) {
+          const arrow = document.createElement('span');
+          arrow.className = 'path-arrow';
+          arrow.textContent = '\u2192';
+          chain.appendChild(arrow);
+        }
+        const node = document.createElement('div');
+        node.className = 'path-node';
+        node.innerHTML = `<span class="level-tag">L${p.level}</span>${p.label}`;
+        chain.appendChild(node);
+      });
+
+      const info = document.getElementById('violationInfo');
+      if (data.violation_at) {
+        info.innerHTML = `<span class="violation-badge">Hierarchy violation at L${data.violation_at}</span>`;
+      } else {
+        info.innerHTML = `<span class="consistent-badge">Consistent hierarchy</span>`;
+      }
+
+      const meta = document.getElementById('limeMeta');
+      meta.innerHTML = `Explaining <strong>L${data.lime_level}</strong> = <strong>${data.lime_label}</strong> (p=${data.lime_label_proba.toFixed(3)})`;
+
+      const chart = document.getElementById('barChart');
+      chart.innerHTML = '';
+
+      const maxAbs = Math.max(...data.word_scores.map(ws => Math.abs(ws.score)), 0.001);
+
+      data.word_scores.forEach(ws => {
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+
+        const word = document.createElement('div');
+        word.className = 'bar-word';
+        word.textContent = ws.word;
+
+        const track = document.createElement('div');
+        track.className = 'bar-track';
+        track.innerHTML = '<div class="bar-center"></div>';
+
+        const fill = document.createElement('div');
+        const pct = (Math.abs(ws.score) / maxAbs) * 48;
+        fill.className = 'bar-fill ' + (ws.score >= 0 ? 'positive' : 'negative');
+        fill.style.width = pct + '%';
+        track.appendChild(fill);
+
+        const value = document.createElement('div');
+        value.className = 'bar-value';
+        value.textContent = (ws.score >= 0 ? '+' : '') + ws.score.toFixed(4);
+
+        row.appendChild(word);
+        row.appendChild(track);
+        row.appendChild(value);
+        chart.appendChild(row);
+      });
+
+      document.getElementById('results').classList.remove('hidden');
+    }
+
+    loadSamples();
+  </script>
+</body>
+</html>
