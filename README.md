@@ -192,8 +192,7 @@ The result is a bar chart showing the most important words:
 
 > *Blue bars = words pushing toward the predicted category, Red bars = words pushing away.*
 
-<!-- Insert LIME bar chart image here, e.g.: -->
-<!-- ![LIME explanation example](assets/lime_example.png) -->
+![LIME explanation example](assets/screenshots/demo_results.jpg)
 
 ---
 
@@ -238,8 +237,7 @@ For each original–paraphrase pair we measure:
 
 > *Original title and its paraphrases get very similar LIME explanations — the most important words remain the same, only exact scores shift slightly.*
 
-<!-- Insert side-by-side LIME comparison figure here -->
-<!-- ![LIME consistency comparison](assets/lime_consistency.png) -->
+![LIME consistency comparison](assets/screenshots/lime_chart_paraphrased.png)
 
 ### Category flip example
 
@@ -247,8 +245,7 @@ Sometimes a paraphrase *does* flip the prediction. LIME clearly shows which inje
 
 > *Adding the word "large" to a product title flipped the L1 prediction from one category to another. LIME highlights "large" as the driving factor.*
 
-<!-- Insert flip figure here -->
-<!-- ![Category flip example](assets/lime_flip.png) -->
+![Category flip example](assets/screenshots/lime_chart_flipped.png)
 
 ---
 
