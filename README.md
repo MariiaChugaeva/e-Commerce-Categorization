@@ -87,7 +87,37 @@ Input text -> Tokenize -> Word IDs
                         Softmax -> class probabilities
 ```
 
-The forward pass is very simple:
+**Hidden representation** — average of word embeddings:
+
+$$h = \frac{1}{|S|} \sum_{i \in S} E_{w_i}$$
+
+where $S$ is the set of word indices in the input text and $E \in \mathbb{R}^{V \times d}$ is the embedding matrix.
+
+**Logits** — linear transformation:
+
+$$z = W^\top h + b, \quad W \in \mathbb{R}^{d \times C},\ b \in \mathbb{R}^C$$
+
+**Softmax** — convert logits to probabilities (with numerical stability trick):
+
+$$P(y = c \mid x) = \frac{e^{z_c - \max(z)}}{\sum_{j=1}^{C} e^{z_j - \max(z)}}$$
+
+**Cross-entropy loss** for a single sample with true label $y$:
+
+$$\mathcal{L} = -\log P(y \mid x)$$
+
+**SGD update** — gradients of cross-entropy w.r.t. softmax output:
+
+$$g = \hat{p} - \mathbf{1}_y$$
+
+where $\hat{p}$ is the predicted probability vector and $\mathbf{1}_y$ is a one-hot vector for the true class. Then:
+
+$$W \leftarrow W - \eta \cdot h \cdot g^\top$$
+
+$$b \leftarrow b - \eta \cdot g$$
+
+$$E_{w_i} \leftarrow E_{w_i} - \eta \cdot \frac{g^\top W^\top}{|S|}, \quad \forall\, i \in S$$
+
+The forward pass in code:
 
 ```python
 def _forward(self, word_ids):
@@ -99,15 +129,16 @@ def _forward(self, word_ids):
     return hidden, _softmax(logits)
 ```
 
-Training is per-sample SGD with cross-entropy loss. Gradients flow back into the linear layer and the embeddings.
-
 ### Hierarchical FastText (HFT)
 
 A single flat classifier struggles with fine-grained categories (L3 has 639 classes, L4 — 1,853). Our solution: **one FastText model per hierarchy level**.
 
-At inference, predictions are **constrained**:
+At inference, predictions are **constrained**. For each level $l$, let $\hat{y}^{(l)}$ be the predicted label. The hierarchy constraint is:
+
+$$\hat{y}^{(l)} \in \text{Children}(\hat{y}^{(l-1)}), \quad \forall\, l \ge 2$$
+
 - Level 1 predicts freely.
-- Level *i* > 1 may only predict labels that are valid children of the level *i−1* prediction.
+- Level $l > 1$ may only predict labels that are valid children of the level $l-1$ prediction.
 - If the constraint is violated, prediction stops and we record `violation_at`.
 
 ```python
@@ -132,7 +163,11 @@ def predict(self, text: str) -> dict:
 
 ## Classification Results
 
-Training on 25,000 samples (80/20 split, seed 42), evaluated on 2,000 test samples:
+Training on 25,000 samples (80/20 split, seed 42), evaluated on 2,000 test samples.
+
+**Accuracy@k** — fraction of samples where the true label is among the top-k predicted classes:
+
+$$\text{Acc@k} = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}\left[ y_i \in \text{top}_k(\hat{p}_i) \right]$$
 
 | Level | Classes | acc@1 | acc@3 | acc@5 |
 |-------|--------:|------:|------:|------:|
@@ -169,22 +204,36 @@ def _perturb(self, words):
 
 ### Step 2: Get Model Predictions
 
-Pass all N perturbed texts through `predict_proba` to get the probability of the target class for each perturbation.
+Pass all N perturbed texts through `predict_proba` to get the probability of the target class for each perturbation:
+
+$$y_i = P(y = c \mid x'_i), \quad i = 1, \dots, N$$
 
 ### Step 3: Compute Weights
 
-Perturbations closer to the original should matter more. We compute cosine distance between each mask and the original (all-ones) mask, then apply an exponential kernel:
+Perturbations closer to the original should matter more. We compute cosine distance between each mask $m_i$ and the original (all-ones) mask $m_0$:
 
-```
-weight_i = exp(-distance_i^2 / σ^2),  where σ = 0.25
-```
+$$d_i = 1 - \frac{m_i \cdot m_0}{\|m_i\| \cdot \|m_0\|}$$
+
+Then apply an exponential kernel to convert distances to weights:
+
+$$\pi_i = \exp\left(-\frac{d_i^2}{\sigma^2}\right), \quad \sigma = 0.25$$
 
 ### Step 4: Weighted Linear Regression
 
-Fit a weighted least-squares regression of masks → probabilities. The coefficients **β_j** are the LIME scores — they tell us **how much each word contributed to the prediction**.
+Fit a weighted least-squares regression of masks → probabilities. Formally, we solve:
 
-- **Positive β**: the word pushed the model *toward* the class.
-- **Negative β**: the word pushed it *away*.
+$$\beta = \arg\min_\beta \sum_{i=1}^{N} \pi_i \left( y_i - m_i^\top \beta \right)^2 + \lambda \|\beta\|^2$$
+
+where $\lambda = 10^{-6}$ is a small ridge regularization term. The closed-form solution:
+
+$$\beta = \left( M_w^\top M_w + \lambda I \right)^{-1} M_w^\top y_w$$
+
+where $M_w = \text{diag}(\sqrt{\pi}) \cdot M$ and $y_w = \sqrt{\pi} \odot y$.
+
+The coefficients $\beta_j$ are the LIME scores — they tell us **how much each word contributed to the prediction**:
+
+- $\beta_j > 0$ — the word pushed the model *toward* the class.
+- $\beta_j < 0$ — the word pushed it *away*.
 
 ### Visualization
 
@@ -200,11 +249,25 @@ The result is a bar chart showing the most important words:
 
 An explanation is useless if it doesn't reflect what the model actually relies on. We measure three standard faithfulness metrics:
 
-**Comprehensiveness** — remove the top-k important words and measure probability drop. High = the explanation correctly identified important features.
+**Comprehensiveness** — remove the top-k important words and measure probability drop. Let $S_k$ be the set of top-k words by $|\beta_j|$:
 
-**Sufficiency** — keep *only* the top-k words and check if the prediction survives. Low value = the top words alone are enough.
+$$\text{Comp}(x, S_k) = P(y \mid x) - P(y \mid x \setminus S_k)$$
 
-**Monotonicity** — correlation between word importance and actual probability drop when each word is individually removed. Values close to 1 = faithful ranking.
+High value = the explanation correctly identified important features.
+
+**Sufficiency** — keep *only* the top-k words and check if the prediction survives:
+
+$$\text{Suff}(x, S_k) = P(y \mid x) - P(y \mid S_k)$$
+
+Low value = the top words alone are enough to make the prediction.
+
+**Monotonicity** — Pearson correlation between word importance rank and actual probability drop when each word $w_j$ is individually removed:
+
+$$\Delta_j = P(y \mid x) - P(y \mid x \setminus \{w_j\})$$
+
+$$\text{Mono} = \text{corr}\left( |\beta|_{\text{sorted}},\ \Delta_{\text{sorted}} \right)$$
+
+Values close to 1 = the importance ranking is faithful.
 
 | Level | n | Comp. mean | Comp. std | Suff. mean | Suff. std | Mono. mean | Mono. std |
 |-------|--:|-----------:|----------:|-----------:|----------:|-----------:|----------:|
@@ -219,7 +282,23 @@ An explanation is useless if it doesn't reflect what the model actually relies o
 
 A good explanation should not change drastically if we slightly rephrase the product title without changing its meaning. To test this, we use a local LLM (**Ollama**, Qwen 3:4b) to generate surface-level paraphrases — changing only color, size, material, or quantity while keeping the product type the same.
 
-For each original–paraphrase pair we measure:
+For each original–paraphrase pair we measure the following metrics.
+
+**Top-k overlap** — Jaccard similarity of the top-k most important words between original explanation $A$ and variant explanation $B$:
+
+$$\text{Overlap}_k(A, B) = \frac{|T_k(A) \cap T_k(B)|}{|T_k(A) \cup T_k(B)|}$$
+
+where $T_k(\cdot)$ is the set of top-k words by $|\beta|$.
+
+**Score correlation** — Pearson correlation of LIME scores for words that appear in both texts:
+
+$$\text{ScoreCorr}(A, B) = \text{corr}(\beta_A^{\text{common}}, \beta_B^{\text{common}})$$
+
+**Path agreement** — number of hierarchy levels that match from the root before the first disagreement:
+
+$$\text{PathAgree}(p_A, p_B) = \max\{l : p_A^{(i)} = p_B^{(i)},\ \forall\, i \le l\}$$
+
+Results:
 
 | Metric | Value |
 |--------|------:|
